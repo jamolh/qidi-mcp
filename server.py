@@ -157,8 +157,11 @@ def _resolve_machine(name: str) -> str:
     for cand in (f"{name} 0.4 nozzle", name.replace("Qidi ", "") + " 0.4 nozzle"):
         if cand in names:
             return cand
-    low = name.lower().replace("-", "").replace(" ", "")
-    hits = [n for n in names if n.lower().replace("-", "").replace(" ", "").startswith(low)]
+    low = name.lower().replace("-", "").replace(" ", "").removeprefix("qidi")
+    flat = lambda n: n.lower().replace("-", "").replace(" ", "")
+    hits = [n for n in names if flat(n).startswith(low)]
+    if not hits:
+        hits = [n for n in names if flat(n).startswith("x" + low)]
     if hits:
         return sorted(hits, key=lambda n: ("0.4" not in n, n))[0]
     raise ValueError(f"unknown printer model {name!r}. Known: {', '.join(sorted({n.rsplit(' ', 2)[0] for n in names}))}")
