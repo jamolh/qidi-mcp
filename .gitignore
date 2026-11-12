@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+gcode/
+*.gcode
+*.3mf
+.DS_Store
